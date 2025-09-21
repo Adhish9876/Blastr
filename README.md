@@ -131,16 +131,16 @@ While the visual polish was "vibe-coded" with Pygame, the networking foundation 
 *Add your game screenshots here by uploading images to `/assets/` folder*
 
 
-<div align="center">
-![Main Menu](images/title.png)
-![Progress Screen](images/loading.png)
-![Gameplay](images/game.png)
-![Respawn](images/respawn.png)
-![Leaderboard](images/lead.png)
-![Achievements](images/achieve.png)
-![Progress](images/progress.png)
-![SuperPower](images/super.png)
-</div>
+<p align="center">
+<img src="images/title.png" width="300"/>
+<img src="images/loading.png" width="300"/>
+<img src="images/game.png" width="300"/>
+<img src="images/respawn.png" width="300"/>
+<img src="images/lead.png" width="300"/>
+<img src="images/achieve.png" width="300"/>
+<img src="images/progress.png" width="300"/>
+<img src="images/super.png" width="300"/>
+</p>
 
 
 
