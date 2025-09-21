@@ -126,21 +126,50 @@ While the visual polish was "vibe-coded" with Pygame, the networking foundation 
 
 ---
 
-## 🖼️ Screenshots
+## 🖼️ IN-GAME Screenshots
 
-*Add your game screenshots here by uploading images to `/assets/` folder*
 
 
 <p align="center">
-<img src="images/title.png" width="300"/>
-<img src="images/loading.png" width="300"/>
-<img src="images/game.png" width="300"/>
-<img src="images/respawn.png" width="300"/>
-<img src="images/lead.png" width="300"/>
-<img src="images/achieve.png" width="300"/>
-<img src="images/progress.png" width="300"/>
-<img src="images/super.png" width="300"/>
+  <img src="images/title.png" width="300"/><br>
+  <em>Main Menu / Title Screen</em>
 </p>
+
+<p align="center">
+  <img src="images/loading.png" width="300"/><br>
+  <em>Progress / Loading Screen</em>
+</p>
+
+<p align="center">
+  <img src="images/game.png" width="300"/><br>
+  <em>Gameplay Screen</em>
+</p>
+
+<p align="center">
+  <img src="images/respawn.png" width="300"/><br>
+  <em>Respawn / Player Death Screen</em>
+</p>
+
+<p align="center">
+  <img src="images/lead.png" width="300"/><br>
+  <em>Leaderboard</em>
+</p>
+
+<p align="center">
+  <img src="images/achieve.png" width="300"/><br>
+  <em>Achievements</em>
+</p>
+
+<p align="center">
+  <img src="images/progress.png" width="300"/><br>
+  <em>Progress Overview</em>
+</p>
+
+<p align="center">
+  <img src="images/super.png" width="300"/><br>
+  <em>Super Power / Power-Up Screen</em>
+</p>
+
 
 
 
