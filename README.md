@@ -70,7 +70,7 @@ Blastr! isn't just another simple shooter. It's packed with features that make e
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/blastr-game.git
+   git clone https://github.com/Adhish9876/blastr-game.git
    cd blastr-game
    ```
 
