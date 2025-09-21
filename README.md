@@ -130,7 +130,7 @@ While the visual polish was "vibe-coded" with Pygame, the networking foundation 
 
 *Add your game screenshots here by uploading images to `/assets/` folder*
 
-```markdown
+
 <div align="center">
 ![Main Menu](images/title.png)
 ![Progress Screen](images/loading.png)
@@ -143,7 +143,7 @@ While the visual polish was "vibe-coded" with Pygame, the networking foundation 
 </div>
 
 
-```
+
 
 ---
 
