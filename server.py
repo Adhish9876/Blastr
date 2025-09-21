@@ -35,7 +35,6 @@ POWERUP_SPAWN_CHANCE = 0.002
 MAX_POWERUPS = 3
 POWERUP_TYPES = {
     'health': {'color': (102, 187, 106), 'value': 30},
-    'speed': {'color': (66, 165, 245), 'duration': 5.0},
     'damage': {'color': (239, 83, 80), 'duration': 8.0}
 }
 HAZARD_INTERVAL = 20.0
