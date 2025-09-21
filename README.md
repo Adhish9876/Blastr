@@ -130,46 +130,49 @@ While the visual polish was "vibe-coded" with Pygame, the networking foundation 
 
 
 
-<p align="center">
-  <img src="images/title.png" width="300"/><br>
-  <em>Main Menu / Title Screen</em>
-</p>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;">
 
-<p align="center">
-  <img src="images/loading.png" width="300"/><br>
-  <em>Progress / Loading Screen</em>
-</p>
+  <div style="flex: 0 0 45%; text-align: center;">
+    <img src="images/title.png" style="width: 100%; max-width: 400px;">
+    <div>Main Menu / Title Screen</div>
+  </div>
 
-<p align="center">
-  <img src="images/game.png" width="300"/><br>
-  <em>Gameplay Screen</em>
-</p>
+  <div style="flex: 0 0 45%; text-align: center;">
+    <img src="images/loading.png" style="width: 100%; max-width: 400px;">
+    <div>Progress / Loading Screen</div>
+  </div>
 
-<p align="center">
-  <img src="images/respawn.png" width="300"/><br>
-  <em>Respawn / Player Death Screen</em>
-</p>
+  <div style="flex: 0 0 45%; text-align: center;">
+    <img src="images/game.png" style="width: 100%; max-width: 400px;">
+    <div>Gameplay Screen</div>
+  </div>
 
-<p align="center">
-  <img src="images/lead.png" width="300"/><br>
-  <em>Leaderboard</em>
-</p>
+  <div style="flex: 0 0 45%; text-align: center;">
+    <img src="images/respawn.png" style="width: 100%; max-width: 400px;">
+    <div>Respawn / Player Death Screen</div>
+  </div>
 
-<p align="center">
-  <img src="images/achieve.png" width="300"/><br>
-  <em>Achievements</em>
-</p>
+  <div style="flex: 0 0 45%; text-align: center;">
+    <img src="images/lead.png" style="width: 100%; max-width: 400px;">
+    <div>Leaderboard</div>
+  </div>
 
-<p align="center">
-  <img src="images/progress.png" width="300"/><br>
-  <em>Progress Overview</em>
-</p>
+  <div style="flex: 0 0 45%; text-align: center;">
+    <img src="images/achieve.png" style="width: 100%; max-width: 400px;">
+    <div>Achievements</div>
+  </div>
 
-<p align="center">
-  <img src="images/super.png" width="300"/><br>
-  <em>Super Power / Power-Up Screen</em>
-</p>
+  <div style="flex: 0 0 45%; text-align: center;">
+    <img src="images/progress.png" style="width: 100%; max-width: 400px;">
+    <div>Progress Overview</div>
+  </div>
 
+  <div style="flex: 0 0 45%; text-align: center;">
+    <img src="images/super.png" style="width: 100%; max-width: 400px;">
+    <div>Super Power / Power-Up Screen</div>
+  </div>
+
+</div>
 
 
 
