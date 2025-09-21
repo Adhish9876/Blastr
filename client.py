@@ -37,6 +37,87 @@ pygame.mixer.init()
 current_width, current_height = ORIGINAL_WIDTH, ORIGINAL_HEIGHT
 scale_factor = 1.0
 
+
+
+#achievment popup
+# Add this new class for achievement popups
+class AchievementPopup:
+    def __init__(self, achievement_name, description):
+        self.achievement_name = achievement_name
+        self.description = description
+        self.start_time = time.time()
+        self.duration = 4.0
+        self.slide_in_time = 0.5
+        self.slide_out_time = 0.5
+
+    def draw(self, screen):
+        global current_width, get_scaled_size, font_tiny, font_small, font_ui, scale_factor
+        age = time.time() - self.start_time
+        if age >= self.duration:
+            return False  # Remove this popup
+
+        # Calculate animation progress
+        if age < self.slide_in_time:
+            progress = age / self.slide_in_time
+            x_offset = (1 - progress) * 300
+        elif age > self.duration - self.slide_out_time:
+            progress = (age - (self.duration - self.slide_out_time)) / self.slide_out_time
+            x_offset = progress * 300
+        else:
+            x_offset = 0
+
+        # Popup dimensions and position (smaller)
+        popup_width = int(260 * scale_factor)
+        popup_height = int(60 * scale_factor)
+        popup_x = current_width - popup_width - int(20 * scale_factor) + int(x_offset)
+        popup_y = int(80 * scale_factor)
+
+        # Background with glow effect
+        glow_surf = pygame.Surface((popup_width + 20, popup_height + 20), pygame.SRCALPHA)
+        pygame.draw.rect(glow_surf, (255, 238, 88, 30), (0, 0, popup_width + 20, popup_height + 20), border_radius=15)
+        screen.blit(glow_surf, (popup_x - 10, popup_y - 10))
+
+        # Main background
+        pygame.draw.rect(screen, (25, 30, 50), (popup_x, popup_y, popup_width, popup_height), border_radius=12)
+        pygame.draw.rect(screen, (255, 238, 88), (popup_x, popup_y, popup_width, popup_height), 3, border_radius=12)
+
+        # Achievement icon (star)
+        icon_size = int(18 * scale_factor)
+        icon_x = popup_x + int(10 * scale_factor)
+        icon_y = popup_y + popup_height // 2
+
+        # Draw glowing star
+        star_points = []
+        for i in range(5):
+            angle = (i * 4 * math.pi / 5) - math.pi / 2
+            outer_x = icon_x + math.cos(angle) * icon_size // 2
+            outer_y = icon_y + math.sin(angle) * icon_size // 2
+            star_points.append((outer_x, outer_y))
+            angle = ((i + 0.5) * 4 * math.pi / 5) - math.pi / 2
+            inner_x = icon_x + math.cos(angle) * icon_size // 4
+            inner_y = icon_y + math.sin(angle) * icon_size // 4
+            star_points.append((inner_x, inner_y))
+        pygame.draw.polygon(screen, (255, 238, 88), star_points)
+        pygame.draw.polygon(screen, (255, 255, 255), star_points, 2)
+
+        # Text
+        text_x = icon_x + int(32 * scale_factor)
+
+        # "ACHIEVEMENT UNLOCKED!" header (smaller)
+        header_surface = font_tiny.render("ACHIEVEMENT UNLOCKED!", True, (255, 238, 88))
+        screen.blit(header_surface, (text_x, popup_y + int(8 * scale_factor)))
+
+        # Achievement name
+        name_surface = font_small.render(self.achievement_name, True, (255, 255, 255))
+        screen.blit(name_surface, (text_x, popup_y + int(22 * scale_factor)))
+
+        # Description
+        desc_surface = font_ui.render(self.description, True, (200, 200, 220))
+        screen.blit(desc_surface, (text_x, popup_y + int(38 * scale_factor)))
+
+        return True  # Keep this popup
+
+
 def get_scaled_pos(x, y):
     return int(x * scale_factor), int(y * scale_factor)
 
@@ -82,53 +163,75 @@ class PlayerProgress:
             self.level += 1
             self.xp_to_next = int(100 * (1.2 ** (self.level - 1)))
             leveled_up = True
-            self.check_level_achievements()
+            self.check_level_achievements()  # This will now handle achievement popups
+            self.save_progress()  # Save immediately after level up
         return leveled_up
     
     def check_achievements(self, event_type, data=None):
         new_achievements = []
-        
+    
+
         if event_type == 'kill':
-            if self.total_kills == 10 and 'First Blood' not in self.achievements:
-                new_achievements.append('First Blood')
-            elif self.total_kills == 100 and 'Centurion' not in self.achievements:
-                new_achievements.append('Centurion')
-            elif self.total_kills == 500 and 'Executioner' not in self.achievements:
-                new_achievements.append('Executioner')
-        
+            if self.total_kills >= 1 and 'First Blood' not in self.achievements:
+                new_achievements.append(('First Blood', 'Get your first kill'))
+            if self.total_kills >= 100 and 'Centurion' not in self.achievements:
+                new_achievements.append(('Centurion', 'Reach 100 total kills'))
+            if self.total_kills >= 500 and 'Executioner' not in self.achievements:
+                new_achievements.append(('Executioner', 'Reach 500 total kills'))
+
         elif event_type == 'killstreak':
             streak = data
             if streak >= 5 and 'Rampage' not in self.achievements:
-                new_achievements.append('Rampage')
-            elif streak >= 10 and 'Unstoppable' not in self.achievements:
-                new_achievements.append('Unstoppable')
-        
+                new_achievements.append(('Rampage', 'Get a 5 kill streak'))
+            if streak >= 10 and 'Unstoppable' not in self.achievements:
+                new_achievements.append(('Unstoppable', 'Get a 10 kill streak'))
+
         elif event_type == 'survival':
             survival_time = data
             if survival_time >= 300 and 'Survivor' not in self.achievements:
-                new_achievements.append('Survivor')
-        
+                new_achievements.append(('Survivor', 'Survive for 5 minutes in one game'))
+
         elif event_type == 'level':
             if self.level >= 10 and 'Veteran' not in self.achievements:
-                new_achievements.append('Veteran')
+                new_achievements.append(('Veteran', 'Reach level 10'))
                 self.unlocked_titles.add('Veteran')
-        
-        for achievement in new_achievements:
-            self.achievements.add(achievement)
-        
-        return new_achievements
     
+    # Add achievements to set and save immediately
+        for achievement_name, description in new_achievements:
+            self.achievements.add(achievement_name)
+    
+    # Save progress immediately when achievements are unlocked
+        if new_achievements:
+            self.save_progress()
+    
+        return new_achievements
+
+
+# Add achievement_popups to global variables (add this near the top with other globals)
+    achievement_popups = []
     def check_level_achievements(self):
+        achievements_unlocked = []
+        
         if self.level >= 5 and 'Apprentice' not in self.unlocked_titles:
             self.unlocked_titles.add('Apprentice')
         elif self.level >= 10 and 'Veteran' not in self.unlocked_titles:
             self.unlocked_titles.add('Veteran')
+            if 'Veteran' not in self.achievements:
+                achievements_unlocked.append(('Veteran', 'Reach level 10'))
+                self.achievements.add('Veteran')
         elif self.level >= 20 and 'Expert' not in self.unlocked_titles:
             self.unlocked_titles.add('Expert')
         elif self.level >= 50 and 'Master' not in self.unlocked_titles:
             self.unlocked_titles.add('Master')
         elif self.level >= 100 and 'Legend' not in self.unlocked_titles:
             self.unlocked_titles.add('Legend')
+        
+        # Save progress and show achievement popups
+        if achievements_unlocked:
+            self.save_progress()
+            for achievement_name, description in achievements_unlocked:
+                global achievement_popups
+                achievement_popups.append(AchievementPopup(achievement_name, description))
     
     def save_progress(self):
         self.playtime += time.time() - self.last_session_start
@@ -198,8 +301,9 @@ input_box = pygame.Rect(ORIGINAL_WIDTH/2-175, ORIGINAL_HEIGHT/2-70, 350, 50); in
 last_shot_time = 0; superpower_available = False
 screen_shake = 0; particles = []; announcements = []; level_up_announcements = []
 starfield = [(random.randint(0,ORIGINAL_WIDTH), random.randint(0,ORIGINAL_HEIGHT), random.randint(1,3), random.uniform(0.1, 0.5)) for _ in range(200)]
-show_info_panel = False; show_progress_panel = False; show_achievements_panel = False
+show_info_panel = False; show_progress_panel = False; show_achievements_panel = False; achievement_popups = []
 fullscreen = False; current_killstreak = 0; game_start_time = None; survival_time = 0
+
 
 # --- Enhanced Particle Effects ---
 class EnhancedParticle:
@@ -656,7 +760,7 @@ def create_buttons():
     return play_btn, quit_btn, start_game_btn
 
 def handle_game_events(events):
-    global current_killstreak, progress, level_up_announcements, particles
+    global current_killstreak, progress, level_up_announcements, particles, achievement_popups
     
     for ev in events:
         if ev['type'] == 'hit':
@@ -676,20 +780,25 @@ def handle_game_events(events):
                 if progress.add_xp(xp_gained):
                     level_up_announcements.append(Announcement(f"LEVEL UP! Now Level {progress.level}", (255, 238, 88), 3.0, 'large'))
                 
-                # Check achievements
+                # Check achievements for kills
                 new_achievements = progress.check_achievements('kill')
-                new_achievements.extend(progress.check_achievements('killstreak', current_killstreak))
+                for achievement_name, description in new_achievements:
+                    achievement_popups.append(AchievementPopup(achievement_name, description))
                 
-                for achievement in new_achievements:
-                    announcements.append(Announcement(f"ACHIEVEMENT: {achievement}!", (255, 238, 88), 3.0, 'medium'))
+                # Check achievements for killstreak
+                streak_achievements = progress.check_achievements('killstreak', current_killstreak)
+                for achievement_name, description in streak_achievements:
+                    achievement_popups.append(AchievementPopup(achievement_name, description))
                 
                 if current_killstreak > progress.best_killstreak:
                     progress.best_killstreak = current_killstreak
+                    progress.save_progress()  # Save immediately
         
         elif ev['type'] == 'death':
             if ev['player_id'] == player_id:
                 current_killstreak = 0
                 progress.total_deaths += 1
+                progress.save_progress()  # Save death count immediately
                 # Death particles
                 for _ in range(30):
                     particles.append(EnhancedParticle(ev['pos'][0], ev['pos'][1], (239, 83, 80), 40, random.randint(4,10), particle_type='normal'))
@@ -702,9 +811,11 @@ def handle_game_events(events):
         elif ev['type'] == 'powerup_collect':
             progress.total_powerups += 1
             progress.add_xp(5)  # Small XP for collecting power-ups
+            progress.save_progress()  # Save powerup count immediately
             # Powerup particles
             for _ in range(15):
                 particles.append(EnhancedParticle(ev['pos'][0], ev['pos'][1], ev['color'], 25, random.randint(2,5), particle_type='float'))
+
 
 def main():
     global game_screen, running, player_name, input_active, last_shot_time, superpower_available
@@ -712,7 +823,7 @@ def main():
     global show_progress_panel, show_achievements_panel, connection_lost, client, player_id
     global predicted_pos, server_snapshots, player_display_positions, my_player_health
     global my_player_max_health, scoreboard_data, fullscreen, screen, current_killstreak
-    global game_start_time, survival_time, progress
+    global game_start_time, survival_time, progress, achievement_popups
     
     play_btn, quit_btn, start_game_btn = create_buttons()
     
@@ -920,19 +1031,29 @@ def main():
             if game_start_time:
                 survival_time = time.time() - game_start_time
                 new_achievements = progress.check_achievements('survival', survival_time)
-                for achievement in new_achievements:
-                    announcements.append(Announcement(f"ACHIEVEMENT: {achievement}!", (255, 238, 88), 3.0, 'medium'))
+                for achievement_name, description in new_achievements:
+                    achievement_popups.append(AchievementPopup(achievement_name, description))
             
             # Draw UI
             draw_playing_ui(my_player_health, my_player_max_health)
             
-            # Draw announcements
+            # Draw and update achievement popups
+            achievement_popups = [popup for popup in achievement_popups if popup.draw(screen)]
+            
+            # Draw announcements (regular killstreaks, etc.)
             for i, announcement in enumerate(level_up_announcements + announcements):
                 announcement.draw(screen, i)
             
             # Clean up old announcements
             level_up_announcements = [a for a in level_up_announcements if time.time() - a.start_time < a.duration]
             announcements = [a for a in announcements if time.time() - a.start_time < a.duration]
+            
+            # Check survival time for achievements (also updated)
+            if game_start_time:
+                survival_time = time.time() - game_start_time
+                survival_achievements = progress.check_achievements('survival', survival_time)
+                for achievement_name, description in survival_achievements:
+                    achievement_popups.append(AchievementPopup(achievement_name, description))
             
             # Draw overlays
             if keys[K_TAB]:
