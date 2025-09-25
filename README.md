@@ -179,24 +179,7 @@ While the visual polish was "vibe-coded" with Pygame, the networking foundation 
 
 ---
 
-## 🤝 Contributing
 
-Contributions are welcome! Whether it's:
-- 🐛 Bug fixes
-- ✨ New features  
-- 🎨 UI improvements
-- 📝 Documentation updates
-
-Please feel free to open issues and pull requests.
-
-### **Development Setup**
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
 
 ## 📈 Roadmap
 
@@ -207,22 +190,3 @@ Please feel free to open issues and pull requests.
 - [ ] Replay system
 - [ ] Custom maps/arenas
 
----
-
-## 📜 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Acknowledgments
-
-- Built with [Pygame](https://www.pygame.org/) - Amazing Python game development library
-- Inspired by classic arena shooters and modern progression systems
-- Special thanks to the Python community for excellent networking resources
-
----
-
-**Made with ❤️ and Python**
-
-*Ready to become a Legend? Clone, play, and dominate the arena!*
